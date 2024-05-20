@@ -1,0 +1,11 @@
+<div>
+    <form [formGroup]="uploadForm" (ngSubmit)="onUpload()" style="font-size: 20px;">
+        <pre>
+            Email Address: <input type="email" formControlName="email">
+            Username: <input type="text" formControlName="username">
+            Password: <input type="password" formControlName="password">
+            Photo     : <input type="file" (change)="onFileSelected($event)">
+            <button type="submit">Upload</button>
+    </pre>
+    </form>
+</div>

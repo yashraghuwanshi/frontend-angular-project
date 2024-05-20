@@ -1,0 +1,51 @@
+<div class="container">
+    <form [formGroup]="searchForm" (ngSubmit)="getProductByName()">
+        <div class="form-group">
+            <label for="productName">Product Name</label>
+            <input type="text" id="productName" class="form-control" formControlName="name"
+                placeholder="Enter product name">
+        </div>
+        <div *ngIf="searchForm.get('name')?.touched && searchForm.get('name')?.invalid">
+            <span *ngIf="searchForm.get('name')?.hasError('required')" style="color: red;">Product name is
+                required.</span>
+        </div>
+        <button class="btn btn-primary" type="submit" [disabled]="searchForm.invalid">Search</button>
+    </form>
+
+    <div *ngIf="product" class="mt-3">
+        <h2>Product Details</h2>
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>SKU</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Supplier Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.sku }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.quantity }}</td>
+                    <td>
+                        <div *ngFor="let supplier of product.suppliers">
+                            <div><strong>Name: </strong>{{ supplier.name }}</div>
+                            <div><strong>Email: </strong>{{ supplier.email }}</div>
+                            <div><strong>Phone: </strong>{{ supplier.phone }}</div>
+                            <div><strong>Address: </strong>{{ supplier.address }}</div>
+                            <hr> <!-- Add horizontal line to separate supplier details -->
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

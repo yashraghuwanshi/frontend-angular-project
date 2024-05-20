@@ -1,0 +1,68 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2>Update Product</h2>
+            <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="id">ID</label>
+                    <input type="text" id="id" class="form-control" formControlName="id">
+                </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" class="form-control" formControlName="name">
+                </div>
+                <div class="form-group">
+                    <label for="sku">SKU</label>
+                    <input type="text" id="sku" class="form-control" formControlName="sku">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" class="form-control" formControlName="description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" id="price" class="form-control" formControlName="price">
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" class="form-control" formControlName="quantity">
+                </div>
+                <div formArrayName="suppliers">
+                    <div *ngFor="let supplier of suppliersFormArray.controls; let i = index" [formGroupName]="i">
+                        <p class="font-weight-bold">Supplier {{ i + 1 }}</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="supplierId">ID</label>
+                                    <input type="text" id="supplierId" class="form-control" formControlName="id">
+                                </div>
+                                <div class="form-group">
+                                    <label for="supplierName">Name</label>
+                                    <input type="text" id="supplierName" class="form-control" formControlName="name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="supplierPhone">Phone</label>
+                                    <input type="text" id="supplierPhone" class="form-control" formControlName="phone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="supplierEmail">Email</label>
+                                    <input type="email" id="supplierEmail" class="form-control" formControlName="email">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="supplierAddress">Address</label>
+                            <input type="text" id="supplierAddress" class="form-control" formControlName="address">
+                        </div>
+                        <button type="button" class="btn btn-block btn-danger" (click)="removeSupplier(i)">Remove
+                            Supplier</button>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-block btn-primary" (click)="addSupplier()">Add Supplier</button>
+                <button type="submit" class="btn btn-success">Update Product</button>
+            </form>
+        </div>
+    </div>
+</div>

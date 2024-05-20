@@ -1,0 +1,50 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="my-form">
+    <div class="form-outline mb-4">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" formControlName="username" placeholder="Enter username">
+    </div>
+    <div class="form-outline mb-4">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" formControlName="password" placeholder="Password">
+    </div>
+
+    <!-- 2 column grid layout for inline styling -->
+  <div class="row mb-4">
+    <div class="col d-flex justify-content-center">
+      <!-- Checkbox -->
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
+        <label class="form-check-label" for="form2Example31"> Remember me </label>
+      </div>
+    </div>
+
+    <div class="col">
+      <!-- Simple link -->
+      <a href="#!">Forgot password?</a>
+    </div>
+  </div>
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary btn-block mb-4" [disabled]="loginForm.invalid">Sign in</button>
+    
+    <!-- Register buttons -->
+    <div class="text-center">
+        <p>Don't have an account? <a routerLink="/register">Register here</a></p>
+        <p>or sign up with:</p>
+        <button type="button" class="btn btn-link btn-floating mx-1">
+            <i class="fa fa-facebook-f"></i>
+        </button>
+
+        <button type="button" class="btn btn-link btn-floating mx-1">
+            <i class="fa fa-google"></i>
+        </button>
+
+        <button type="button" class="btn btn-link btn-floating mx-1">
+            <i class="fa fa-twitter"></i>
+        </button>
+
+        <button type="button" class="btn btn-link btn-floating mx-1">
+            <i class="fa fa-github"></i>
+        </button>
+    </div>
+</form>

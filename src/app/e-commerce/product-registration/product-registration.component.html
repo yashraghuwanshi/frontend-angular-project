@@ -1,0 +1,34 @@
+<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="container">
+    <div>
+        <div class="mb-3">
+            <input type="text" class="form-control" formControlName="id" placeholder="Id">
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" formControlName="name" placeholder="Name">
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" formControlName="sku" placeholder="SKU">
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" formControlName="description" placeholder="Description">
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" formControlName="price" placeholder="Price">
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" formControlName="quantity" placeholder="Quantity">
+        </div>
+        <div formArrayName="suppliers">
+            <div *ngFor="let supplier of suppliersFormArray.controls; let i = index" [formGroupName]="i" class="mb-3">
+                <h2>Supplier {{i + 1}}</h2>
+                <input type="text" formControlName="name" placeholder="Name">
+                <input type="number" formControlName="phone" placeholder="Phone Number">
+                <input type="email" formControlName="email" placeholder="Email Address">
+                <input type="text" formControlName="address" placeholder="Address">
+                <button type="button" class="btn btn-danger mt-2" (click)="removeSupplier(i)">Remove Supplier</button>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="addSupplier()">Add Supplier</button>
+        </div>
+        <button type="submit" class="btn btn-success mt-3" [disabled]="registrationForm.invalid">Submit</button>
+    </div>
+</form>

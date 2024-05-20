@@ -1,0 +1,35 @@
+<div class="container" *ngIf="product">
+    <table class="table table-responsive table-hover">
+        <thead>
+            <th>1</th>
+            <th>Name</th>
+            <th>SKU</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Supplier Details</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>{{product.name}}</td>
+                <td>{{product.sku}}</td>
+                <td>{{product.description}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.quantity}}</td>
+                <td>
+                    <div *ngFor="let supplier of product.suppliers">
+                        <div><span style="font-weight: 500;">Name: </span>{{ supplier.name }}</div>
+                        <div><span style="font-weight: 500;">Email: </span> {{ supplier.email }}</div>
+                        <div><span style="font-weight: 500;">Phone: </span> {{ supplier.phone }}</div>
+                        <div><span style="font-weight: 500;">Address: </span> {{ supplier.address }}</div>
+                        <hr> <!-- Add horizontal line to separate supplier details -->
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="!product">
+    <p>Loading product details...</p>
+  </div>
