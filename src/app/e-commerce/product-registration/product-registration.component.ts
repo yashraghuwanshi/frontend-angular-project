@@ -13,10 +13,10 @@ export class ProductRegistrationComponent implements OnInit {
   registrationForm!: FormGroup;
 
   constructor(private fb: FormBuilder, private commonService: CommonService) {
-    this.registrationForm = this.createFormGroup()
   }
 
   ngOnInit(): void {
+    this.registrationForm = this.createFormGroup()
   }
 
   createFormGroup(): FormGroup {
@@ -24,9 +24,9 @@ export class ProductRegistrationComponent implements OnInit {
       id: [{value: '', disabled: true}],
       name: ['', Validators.required],
       sku: ['', Validators.required],
-      description: [''],
       price: ['', [Validators.required, Validators.min(0)]],
       quantity: ['', [Validators.required, Validators.min(0)]],
+      description: [''],
       suppliers: this.fb.array([])
     })
   }
@@ -66,6 +66,7 @@ export class ProductRegistrationComponent implements OnInit {
 
   onSubmit() {
     if (this.registrationForm.valid) {
+      console.log('Form submitted successfully')
       console.log(this.registrationForm.value)
       this.commonService.saveProduct(this.registrationForm.value).subscribe(
         (response) => {
