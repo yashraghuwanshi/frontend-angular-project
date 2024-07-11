@@ -20,10 +20,10 @@ export class ProductUpdateComponent implements OnInit {
     private commonService: CommonService,
     private route: ActivatedRoute
   ) {
-    this.updateForm = this.createFormGroup()
   }
 
   ngOnInit(): void {
+    this.updateForm = this.createFormGroup()
     this.getProductById();
   }
 
@@ -32,16 +32,16 @@ export class ProductUpdateComponent implements OnInit {
       const productId = params.get('id')
       if (productId) {
         console.log(productId)
-        this.commonService.getProductByName(productId).subscribe(product => {
-          this.product = product;
-          this.updateForm.patchValue(product); // Set form values using patchValue
+        this.commonService.getProductById(productId).subscribe(response => {
+          this.product = response;
+          this.updateForm.patchValue(this.product); // Set form values using patchValue
 
           // Clear existing suppliers array before adding new ones
           this.suppliersFormArray.clear();
 
           // Update form with supplier data (if available)
-          if (product.suppliers) {
-            product.suppliers.forEach(supplier => {
+          if (this.product.suppliers) {
+            this.product.suppliers.forEach(supplier => {
               this.suppliersFormArray.push(this.createSupplierFormGroup(supplier));
             });
           }
@@ -52,7 +52,7 @@ export class ProductUpdateComponent implements OnInit {
 
   createFormGroup(): FormGroup {
     return this.fb.group({
-      id: [{ value: ''}],
+      id: [{ value: '', disabled: true}],
       name: ['', Validators.required],
       sku: ['', Validators.required],
       description: [''],

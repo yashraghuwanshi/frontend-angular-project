@@ -12,10 +12,10 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup
 
   constructor(private fb: FormBuilder, private router: Router) {
-    this.loginForm = this.createLoginForm()
   }
 
   ngOnInit(): void {
+    this.loginForm = this.createLoginForm()
   }
 
   createLoginForm(): FormGroup {
