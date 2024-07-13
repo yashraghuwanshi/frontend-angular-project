@@ -12,14 +12,9 @@ import { CommonService } from 'src/app/shared/common.service';
 export class ProductUpdateComponent implements OnInit {
 
   updateForm!: FormGroup
-
   product!: Product
 
-  constructor(
-    private fb: FormBuilder,
-    private commonService: CommonService,
-    private route: ActivatedRoute
-  ) {
+  constructor(private fb: FormBuilder, private commonService: CommonService, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -28,56 +23,76 @@ export class ProductUpdateComponent implements OnInit {
   }
 
   getProductById() {
-    this.route.paramMap.subscribe(params => {
+    this.activatedRoute.paramMap.subscribe(params => {
       const productId = params.get('id')
       if (productId) {
         console.log(productId)
+
         this.commonService.getProductById(productId).subscribe(response => {
           this.product = response;
-          this.updateForm.patchValue(this.product); // Set form values using patchValue
 
-          // Clear existing suppliers array before adding new ones
-          this.suppliersFormArray.clear();
+          console.log('product', this.product)
 
-          // Update form with supplier data (if available)
-          if (this.product.suppliers) {
+          this.suppliersFormArray.clear()
+
+          // Patch form values with fetched product data
+          this.updateForm.patchValue(this.product);
+
+          // Add each supplier to the form array
+          if (this.product.suppliers && this.product.suppliers.length > 0) {
             this.product.suppliers.forEach(supplier => {
-              this.suppliersFormArray.push(this.createSupplierFormGroup(supplier));
+              this.addOrUpdateSupplier(supplier)
             });
           }
-        })
+          console.log('Update Form', this.updateForm.value)
+        });
+      } else {
+        console.error("Product ID not found in URL parameters");
       }
     })
   }
 
+
   createFormGroup(): FormGroup {
     return this.fb.group({
-      id: [{ value: '', disabled: true}],
+      id: [{ value: '' }],
       name: ['', Validators.required],
       sku: ['', Validators.required],
       description: [''],
-      price: ['', [Validators.required, Validators.min(0)]],
-      quantity: ['', [Validators.required, Validators.min(0)]],
+      price: [0, [Validators.required, Validators.min(0)]],
+      quantity: [0, [Validators.required, Validators.min(0)]],
       suppliers: this.fb.array([])
     })
+  }
+
+  createSupplierFormGroup(supplier: any = {}): FormGroup {
+    return this.fb.group({
+      id: [supplier.id || ''],
+      name: [supplier.name || '', Validators.required],
+      phone: [supplier.phone || '', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      email: [supplier.email || '', [Validators.required, Validators.email]],
+      address: [supplier.address || '', Validators.required]
+    });
   }
 
   get suppliersFormArray(): FormArray {
     return this.updateForm.get('suppliers') as FormArray
   }
 
-  createSupplierFormGroup(supplier?: any): FormGroup {
-    return this.fb.group({
-      id: [supplier?.id],
-      name: [supplier?.name, Validators.required],
-      phone: [supplier?.phone, [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      email: [supplier?.email, [Validators.required, Validators.email]],
-      address: [supplier?.address, Validators.required]
-    });
+  addSupplier() {
+    this.suppliersFormArray.push(this.createSupplierFormGroup())
   }
 
-  addSupplier(): void {
-    this.suppliersFormArray.push(this.createSupplierFormGroup())
+  addOrUpdateSupplier(supplier: any) {
+    const existingSupplierIndex = this.suppliersFormArray.controls.findIndex((control) => control.value.id === supplier.id);
+
+    if (existingSupplierIndex !== -1) {
+      // Update existing supplier
+      this.suppliersFormArray.at(existingSupplierIndex).patchValue(supplier);
+    } else {
+      // Add new supplier
+      this.suppliersFormArray.push(this.createSupplierFormGroup(supplier));
+    }
   }
 
   removeSupplier(index: number): void {
@@ -85,9 +100,16 @@ export class ProductUpdateComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.updateForm.value)
-    this.commonService.updateProduct(this.updateForm.value).subscribe()
-    window.location.reload()
+    if (this.updateForm.valid) {
+      const updatedProduct = this.updateForm.value;
+      console.log('Updated Product:', updatedProduct);
+      console.log('Updated Form ID:', updatedProduct.id)
+      this.commonService.updateProduct(updatedProduct).subscribe(() => {
+        alert('Product updated successfully!')
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000); // 2000 milliseconds = 2 seconds
+      });
+    }
   }
-
 }

@@ -41,11 +41,12 @@ export class CommonService {
     let params = new HttpParams().set('name', name)
     const apiUrl = `${this.apiUrl5}?name=${encodeURIComponent(name)}`; // Construct complete API URL
     console.log('API URL:', apiUrl); // Log the API URL
-    return this.http.get<Product>(this.apiUrl5, {params: params})
+    return this.http.get<Product>(this.apiUrl5, { params: params })
   }
 
   updateProduct(product: Product): Observable<Product> {
-    return this.http.put<Product>(this.apiUrl4 + '/' + product.id, product)
+    const url = `${this.apiUrl4}/${product.id}`
+    return this.http.put<Product>(url, product)
   }
 
   deleteProduct(id: string): Observable<void> {

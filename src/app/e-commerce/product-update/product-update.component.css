@@ -1,0 +1,20 @@
+.form-container {
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    max-width: 650px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.highlighted-heading h2 {
+    color: #007bff; /* Primary color text */
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
