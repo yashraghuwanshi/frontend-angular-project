@@ -44,11 +44,13 @@ export class CommonService {
     return this.http.get<Product>(this.apiUrl5, { params: params })
   }
 
+  // Using Template Literals
   updateProduct(product: Product): Observable<Product> {
     const url = `${this.apiUrl4}/${product.id}`
     return this.http.put<Product>(url, product)
   }
 
+  //Using String Concatenation
   deleteProduct(id: string): Observable<void> {
     return this.http.delete<void>(this.apiUrl3 + '/' + id)
   }

@@ -13,7 +13,7 @@ export class ProductUpdateComponent implements OnInit {
 
   updateForm!: FormGroup
   product!: Product
-
+  
   constructor(private fb: FormBuilder, private commonService: CommonService, private activatedRoute: ActivatedRoute) {
   }
 
@@ -39,11 +39,9 @@ export class ProductUpdateComponent implements OnInit {
           this.updateForm.patchValue(this.product);
 
           // Add each supplier to the form array
-          if (this.product.suppliers && this.product.suppliers.length > 0) {
-            this.product.suppliers.forEach(supplier => {
-              this.addOrUpdateSupplier(supplier)
-            });
-          }
+          this.product.suppliers.forEach(supplier => {
+            this.suppliersFormArray.push(this.createSupplierFormGroup(supplier))
+          });
           console.log('Update Form', this.updateForm.value)
         });
       } else {
@@ -83,18 +81,6 @@ export class ProductUpdateComponent implements OnInit {
     this.suppliersFormArray.push(this.createSupplierFormGroup())
   }
 
-  addOrUpdateSupplier(supplier: any) {
-    const existingSupplierIndex = this.suppliersFormArray.controls.findIndex((control) => control.value.id === supplier.id);
-
-    if (existingSupplierIndex !== -1) {
-      // Update existing supplier
-      this.suppliersFormArray.at(existingSupplierIndex).patchValue(supplier);
-    } else {
-      // Add new supplier
-      this.suppliersFormArray.push(this.createSupplierFormGroup(supplier));
-    }
-  }
-
   removeSupplier(index: number): void {
     this.suppliersFormArray.removeAt(index)
   }
@@ -102,8 +88,10 @@ export class ProductUpdateComponent implements OnInit {
   onSubmit() {
     if (this.updateForm.valid) {
       const updatedProduct = this.updateForm.value;
+      const productId = this.updateForm.get('id')?.value;
       console.log('Updated Product:', updatedProduct);
       console.log('Updated Form ID:', updatedProduct.id)
+
       this.commonService.updateProduct(updatedProduct).subscribe(() => {
         alert('Product updated successfully!')
         setTimeout(() => {
